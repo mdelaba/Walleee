@@ -276,18 +276,58 @@ void loop()
     case 0:    //Robot stopped
       {
 
-        int offset = 5;
+        int offset = -28;
+
+        delay(2000);
+
+        readBeaconFive();
+
+/*
+        //Drive
+        servo_LeftMotor.writeMicroseconds(1700);
+        servo_RightMotor.writeMicroseconds(1700 + offset);
+        delay(3300);
+
+        //Stop
+        servo_LeftMotor.writeMicroseconds(1500);
+        servo_RightMotor.writeMicroseconds(1500);
+        delay(1000);
+
+        //Turn 90
+        servo_LeftMotor.writeMicroseconds(1400);
+        servo_RightMotor.writeMicroseconds(1600);
+        delay(1400);
+
+        //Stop
+        servo_LeftMotor.writeMicroseconds(1500);
+        servo_RightMotor.writeMicroseconds(1500);
+        delay(1000);
+
+
+        //Drive under bridge to other side
+        servo_LeftMotor.writeMicroseconds(1700);
+        servo_RightMotor.writeMicroseconds(1700 + offset);
+        delay(8100);
+
+        //Stop
+        servo_LeftMotor.writeMicroseconds(1500);
+        servo_RightMotor.writeMicroseconds(1500);
+        delay(1000);
 
         /*
-          Software serial MSE 2202 IR tester
 
-          The circuit:
 
-          RX is digital pin 7 (connect to TX of other device)
-          TX is digital pin 11 (connect to RX of other device)
+
+              /*
+                Software serial MSE 2202 IR tester
+
+                The circuit:
+
+                RX is digital pin 7 (connect to TX of other device)
+                TX is digital pin 11 (connect to RX of other device)
 
         */
-
+/*
         delay(2000);
 
         int turnSpeed = 1580;
@@ -298,7 +338,13 @@ void loop()
 
         while (!readBeaconZero()) {
 
-          servo_LeftMotor.writeMicroseconds(1500 - turnDiff + 0);
+          Serial.print("Zero: ");
+          Serial.println(readBeaconZero());
+
+          Serial.print("Five: ");
+          Serial.println(readBeaconFive());
+
+          servo_LeftMotor.writeMicroseconds(1500 - turnDiff);
           servo_RightMotor.writeMicroseconds(1500 + turnDiff);
           //delay(3000);
 
@@ -327,66 +373,101 @@ void loop()
           }
         }
 
-        /**
-          int initial;
-          long startTime = 0;
+        servo_LeftMotor.writeMicroseconds(1500);
+        servo_RightMotor.writeMicroseconds(1500);
+        delay(1000);
 
-          initial = digitalRead(ci_Light_Sensor);
+        //Turn 180
+        servo_LeftMotor.writeMicroseconds(1600);
+        servo_RightMotor.writeMicroseconds(1400);
+        delay(2700);
 
-          for (int i = 0; i < 16; i++) {
-          while (true) {
+        //Stop
+        servo_LeftMotor.writeMicroseconds(1500);
+        servo_RightMotor.writeMicroseconds(1500);
+        delay(1000);
 
-            if (digitalRead(ci_Light_Sensor) != initial) {
+        //Drive back under bridge
+        servo_LeftMotor.writeMicroseconds(1800);
+        servo_RightMotor.writeMicroseconds(1800 + offset);
+        delay(8500);
 
-              Serial.println(digitalRead(ci_Light_Sensor));
-              Serial.println((millis() - startTime));
-              initial = digitalRead(ci_Light_Sensor);
-              startTime = millis();
-              break;
-            }
-          }
-          }
-          exit(0);
+        //Stop
+        servo_LeftMotor.writeMicroseconds(1500);
+        servo_RightMotor.writeMicroseconds(1500);
+        delay(1000);
 
-          /**
-          int lightSensor = digitalRead(ci_Light_Sensor);
-          int finalSense;
-          long startTime = millis();
-          long interval = 0;
+        /*
+                //Turn 180
+                servo_LeftMotor.writeMicroseconds(1600);
+                servo_RightMotor.writeMicroseconds(1400);
+                delay(6800);
 
-          delay(2000);
-          /**
-          for (int i = 0; i<16; i++) {
+                //Drive to bridge
+                servo_LeftMotor.writeMicroseconds(1800);
+                servo_RightMotor.writeMicroseconds(1800 + offset);
+                delay(2000);
 
-          Serial.println(digitalRead(ci_Light_Sensor));
-          delay(20);
-          Serial.print("\n");
-          }
-          exit(0);
+                /**
+                  int initial;
+                  long startTime = 0;
+
+                  initial = digitalRead(ci_Light_Sensor);
+
+                  for (int i = 0; i < 16; i++) {
+                  while (true) {
+
+                    if (digitalRead(ci_Light_Sensor) != initial) {
+
+                      Serial.println(digitalRead(ci_Light_Sensor));
+                      Serial.println((millis() - startTime));
+                      initial = digitalRead(ci_Light_Sensor);
+                      startTime = millis();
+                      break;
+                    }
+                  }
+                  }
+                  exit(0);
+
+                  /**
+                  int lightSensor = digitalRead(ci_Light_Sensor);
+                  int finalSense;
+                  long startTime = millis();
+                  long interval = 0;
+
+                  delay(2000);
+                  /**
+                  for (int i = 0; i<16; i++) {
+
+                  Serial.println(digitalRead(ci_Light_Sensor));
+                  delay(20);
+                  Serial.print("\n");
+                  }
+                  exit(0);
 
 
-          for (int i = 0; i<16; i++) {
+                  for (int i = 0; i<16; i++) {
 
-          lightSensor = digitalRead(ci_Light_Sensor);
-          Serial.print("initial state = ");
-          Serial.println(lightSensor);
-          startTime = millis();
+                  lightSensor = digitalRead(ci_Light_Sensor);
+                  Serial.print("initial state = ");
+                  Serial.println(lightSensor);
+                  startTime = millis();
 
-          do  {
+                  do  {
 
-          finalSense = digitalRead(ci_Light_Sensor);
+                  finalSense = digitalRead(ci_Light_Sensor);
 
-          } while (finalSense == lightSensor);
+                  } while (finalSense == lightSensor);
 
-          interval = millis() - startTime;
+                  interval = millis() - startTime;
 
-          Serial.println("\nFinal sense: ");
-          Serial.println(finalSense);
+                  Serial.println("\nFinal sense: ");
+                  Serial.println(finalSense);
 
-          Serial.println("\n\n\n\n\n\nFinished with time (ms): ");
-          Serial.println(interval);
-          Serial.println("\n");
-          } exit(0);
+                  Serial.println("\n\n\n\n\n\nFinished with time (ms): ");
+                  Serial.println(interval);
+                  Serial.println("\n");
+                  } exit(0);
 
         */
 
@@ -728,7 +809,7 @@ int readBeaconZero() {
 }
 
 int readBeaconFive() {
-
+/*
   if (mySerial.available())
   {
     if (mySerial.read() == 5) {
@@ -738,6 +819,11 @@ int readBeaconFive() {
     }
     //Serial.write(mySerial.read());
   }
+  */
+
+  Serial.println(mySerial.read());
+  Serial.write(mySerial.read());
+  Serial.println("write^");
 
   mySerial.flush();
   return 0;
