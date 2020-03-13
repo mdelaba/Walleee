@@ -280,9 +280,6 @@ void loop()
 
         delay(2000);
 
-        readBeaconFive();
-
-/*
         //Drive
         servo_LeftMotor.writeMicroseconds(1700);
         servo_RightMotor.writeMicroseconds(1700 + offset);
@@ -327,7 +324,7 @@ void loop()
                 TX is digital pin 11 (connect to RX of other device)
 
         */
-/*
+
         delay(2000);
 
         int turnSpeed = 1580;
@@ -796,7 +793,7 @@ int readBeaconZero() {
 
   if (mySerial.available())
   {
-    if (mySerial.read() == 0) {
+    if (mySerial.read() == 48) {
 
       mySerial.flush();
       return 1;
@@ -809,23 +806,19 @@ int readBeaconZero() {
 }
 
 int readBeaconFive() {
-/*
+
   if (mySerial.available())
   {
-    if (mySerial.read() == 5) {
+    if (mySerial.read() == 53) {
 
       mySerial.flush();
       return 1;
     }
     //Serial.write(mySerial.read());
   }
-  */
-
+  
   Serial.println(mySerial.read());
-  Serial.write(mySerial.read());
-  Serial.println("write^");
 
-  mySerial.flush();
   return 0;
 }
 
